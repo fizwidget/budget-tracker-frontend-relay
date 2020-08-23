@@ -1,0 +1,241 @@
+interface Node {
+  """
+  Globally unique object identifier.
+  """
+  id: ID!
+}
+
+type Query {
+  """
+  Retrieve any object by its ID.
+  """
+  node(id: ID!): Node
+
+  """
+  List transactions with an optional filter.
+  """
+  transactions(filter: TransactionsFilterInput): [Transaction!]
+
+  """
+  List all categories.
+  """
+  categories: [Category!]
+
+  """
+  List all bank accounts.
+  """
+  accounts: [Account!]
+
+  """
+  Calculate the savings rate (% of income that is saved/invested) for a particular time period.
+  """
+  savingsRate(timeRange: TimeRangeInput): Float
+}
+
+input TransactionsFilterInput {
+  """
+  Filter by categories.
+
+  Null signifies "uncategorised".
+  """
+  categories: [ID]
+  """
+  Filter by a time range.
+  """
+  timeRange: TimeRangeInput
+}
+
+input TimeRangeInput {
+  """
+  Start date for the time period (inclusive).
+  """
+  startDate: String
+  """
+  End date for the time period (inclusive).
+  """
+  endDate: String
+}
+
+type Transaction implements Node {
+  """
+  Opaque identifier.
+  """
+  id: ID!
+
+  """
+  Date the transaction occured on (including timezone offset).
+
+  TODO: Specify exact format.
+  """
+  date: String!
+
+  """
+  Description of the transaction, as per the bank record.
+  """
+  description: String!
+
+  """
+  Dollar amount of the transaction.
+
+  Positive values for money coming in, negative values for money going out.
+  """
+  amount: Float!
+
+  """
+  Account the transaction occured in (e.g. "Savings").
+  """
+  account: Account
+
+  """
+  Category the transaction falls into (`null` if the transaction has not been categorised).
+  """
+  category: Category
+}
+
+type Category implements Node {
+  """
+  Opaque identifier.
+  """
+  id: ID!
+
+  """
+  Category name, e.g. "Transport".
+  """
+  name: String!
+}
+
+type Account implements Node {
+  """
+  Opaque identifier.
+  """
+  id: ID!
+
+  """
+  Name of the account, e.g. "Savings".
+  """
+  name: String!
+}
+
+type Mutation {
+  """
+  Create an account that transactions occur in.
+  """
+  createAccount(input: CreateAccountInput!): CreateAccountPayload
+
+  """
+  Create a category that transactions can be organised into.
+  """
+  createCategory(input: CreateCategoryInput!): CreateCategoryPayload
+
+  """
+  Record a series of transactions.
+
+  Transactions that have already been recorded will be ignored.
+  """
+  recordTransactions(input: RecordTransactionsInput!): RecordTransactionsPayload
+
+  """
+  Categorise a transaction.
+  """
+  categoriseTransaction(
+    input: CategoriseTransactionInput!
+  ): CategoriseTransactionPayload
+}
+
+interface MutationPayload {
+  """
+  True of the mutation succeeded, false if it failed.
+  """
+  success: Boolean!
+
+  """
+  A human-readable message to assist with debugging.
+  """
+  message: String!
+
+  """
+  A machine-readable enum to allow frontends to disambiguate different types of errors.
+  """
+  errorType: String
+}
+
+input CreateAccountInput {
+  """
+  Account identifier, as specified by the bank.
+  """
+  id: ID!
+
+  """
+  Name of the account, e.g. "Savings".
+  """
+  name: String!
+}
+
+type CreateAccountPayload implements MutationPayload {
+  success: Boolean!
+  message: String!
+  errorType: String
+
+  """
+  The created account.
+  """
+  account: Account
+}
+
+input CreateCategoryInput {
+  """
+  Category name, e.g. "Transport".
+  """
+  name: String!
+}
+
+type CreateCategoryPayload implements MutationPayload {
+  success: Boolean!
+  message: String!
+  errorType: String
+
+  """
+  The created category.
+  """
+  category: Category
+}
+
+input RecordTransactionsInput {
+  """
+  CSV transaction record (ING format).
+  """
+  csv: String!
+}
+
+type RecordTransactionsPayload implements MutationPayload {
+  success: Boolean!
+  message: String!
+  errorType: String
+
+  """
+  List transactions with an optional filter (including the newly created ones).
+  """
+  transactions(filter: TransactionsFilterInput): [Transaction!]
+}
+
+input CategoriseTransactionInput {
+  """
+  The transaction to categorise.
+  """
+  transactionId: ID!
+  """
+  The category to put the transaction into (`null` to uncategorise).
+  """
+  categoryId: ID
+}
+
+type CategoriseTransactionPayload implements MutationPayload {
+  success: Boolean!
+  message: String!
+  errorType: String
+
+  """
+  The categorised transaction.
+  """
+  transaction: Transaction
+}
