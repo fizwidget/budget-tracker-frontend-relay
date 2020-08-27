@@ -1,11 +1,7 @@
 import * as React from "react";
-import {
-  RelayEnvironmentProvider,
-  preloadQuery,
-  usePreloadedQuery,
-} from "react-relay/hooks";
+import { useLazyLoadQuery } from "react-relay/hooks";
 import graphql from "babel-plugin-relay/macro";
-import { RelayEnvironment } from "../relay/environment";
+import { appQuery as appQueryType } from "./__generated__/appQuery.graphql";
 
 const appQuery = graphql`
   query appQuery {
@@ -16,24 +12,11 @@ const appQuery = graphql`
   }
 `;
 
-const preloadedQuery = preloadQuery(RelayEnvironment, appQuery, {});
-
-interface Props {
-  preloadedQuery: any;
-}
-
-const Main = (props: Props) => {
-  const data = usePreloadedQuery(appQuery, props.preloadedQuery);
-
+const Main = () => {
+  const data = useLazyLoadQuery<appQueryType>(appQuery, {});
   return <pre>{JSON.stringify(data, null, 4)}</pre>;
 };
 
 export const App = () => {
-  return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <React.Suspense fallback="Loading...">
-        <Main preloadedQuery={preloadedQuery} />
-      </React.Suspense>
-    </RelayEnvironmentProvider>
-  );
+  return <React.Suspense fallback="Loading...">{<Main />}</React.Suspense>;
 };

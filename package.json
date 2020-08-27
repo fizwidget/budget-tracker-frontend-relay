@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Frontend for the budget tracker app.",
   "scripts": {
-    "start": "yarn relay && parcel serve src/index.html --open",
+    "start": "yarn relay && parcel serve src/index.html",
     "build": "yarn relay && yarn typecheck && parcel build src/index.html",
     "relay": "yarn relay-compiler --schema schema.graphql --src ./src/ --language typescript --watchman false $@",
     "typecheck": "tsc --noEmit"
