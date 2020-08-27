@@ -3,9 +3,6 @@
     "strict": true,
     "lib": ["ESNext", "DOM"],
     "baseUrl": "./src",
-    "paths": {
-      "~*": ["./*"]
-    },
     "jsx": "react"
   },
   "include": ["src/**/*"]
