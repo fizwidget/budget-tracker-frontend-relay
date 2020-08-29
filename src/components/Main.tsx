@@ -1,19 +1,18 @@
 import * as React from "react";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import graphql from "babel-plugin-relay/macro";
-import { MainQuery } from "./__generated__/MainQuery.graphql";
+import { MainQuery as MainQueryType } from "./__generated__/MainQuery.graphql";
 import { Header } from "./Header";
 import { Categories } from "./Categories";
 
-const Content = () => {
-  const categories = useLazyLoadQuery<MainQuery>(
-    graphql`
-      query MainQuery {
-        ...Categories_categories
-      }
-    `,
-    {}
-  );
+const mainQuery = graphql`
+  query MainQuery {
+    ...Categories_categories
+  }
+`;
+
+const Content: React.FC = () => {
+  const categories = useLazyLoadQuery<MainQueryType>(mainQuery, {});
   return (
     <>
       <Header />
