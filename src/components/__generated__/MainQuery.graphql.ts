@@ -28,7 +28,6 @@ fragment Categories_categories on Query {
 }
 
 fragment Category_category on Category {
-  id
   name
 }
 */
@@ -83,12 +82,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "cacheID": "aa23cd4e9ca8a32f3a6a65c5fa5c96cb",
+    "cacheID": "fa1acbed7990660cd5bff5ad739edfbc",
     "id": null,
     "metadata": {},
     "name": "MainQuery",
     "operationKind": "query",
-    "text": "query MainQuery {\n  ...Categories_categories\n}\n\nfragment Categories_categories on Query {\n  categories {\n    id\n    ...Category_category\n  }\n}\n\nfragment Category_category on Category {\n  id\n  name\n}\n"
+    "text": "query MainQuery {\n  ...Categories_categories\n}\n\nfragment Categories_categories on Query {\n  categories {\n    id\n    ...Category_category\n  }\n}\n\nfragment Category_category on Category {\n  name\n}\n"
   }
 };
 (node as any).hash = 'd2b00588c453705d99d3cb5530216a88';

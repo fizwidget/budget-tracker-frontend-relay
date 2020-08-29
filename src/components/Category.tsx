@@ -5,7 +5,6 @@ import { Category_category$key } from "./__generated__/Category_category.graphql
 
 const categoryFragment = graphql`
   fragment Category_category on Category {
-    id
     name
   }
 `;
@@ -16,10 +15,5 @@ type Props = {
 
 export const Category: React.FC<Props> = (props) => {
   const category = useFragment(categoryFragment, props.category);
-  return (
-    <div>
-      {category.id}
-      {category.name}
-    </div>
-  );
+  return <li>{category.name}</li>;
 };

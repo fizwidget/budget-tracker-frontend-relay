@@ -21,11 +21,11 @@ export const Categories: React.FC<Props> = (props) => {
   const { categories } = useFragment(categoriesFragment, props.categories);
   return (
     categories && (
-      <>
+      <ul>
         {categories.map((category) => (
           <Category key={category.id} category={category} />
         ))}
-      </>
+      </ul>
     )
   );
 };
