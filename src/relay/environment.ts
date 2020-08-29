@@ -5,10 +5,14 @@ import {
   RequestParameters,
   Store,
   Variables,
+  GraphQLResponse,
 } from "relay-runtime";
 import { fetchGraphQL } from "./fetch-graphql";
 
-async function fetchRelay(params: RequestParameters, variables: Variables) {
+const fetchRelay = async (
+  params: RequestParameters,
+  variables: Variables
+): Promise<GraphQLResponse> => {
   if (params.text == null) {
     throw new Error("fetchRelay called without query text");
   }
@@ -16,7 +20,7 @@ async function fetchRelay(params: RequestParameters, variables: Variables) {
     `fetching query ${params.name} with ${JSON.stringify(variables)}`
   );
   return fetchGraphQL(params.text, variables);
-}
+};
 
 export const RelayEnvironment = new Environment({
   network: Network.create(fetchRelay),

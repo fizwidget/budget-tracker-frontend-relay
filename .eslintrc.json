@@ -1,0 +1,24 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "relay"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:relay/strict",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "rules": {
+    // Using TypeScript.
+    "relay/generated-flow-types": "off",
+    // Not necessary with TypeScript, and doesn't understand `React.FC` type annotation.
+    "react/prop-types": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

@@ -1,6 +1,9 @@
-import { Variables } from "relay-runtime";
+import { Variables, GraphQLResponse } from "relay-runtime";
 
-export const fetchGraphQL = async (text: string, variables: Variables) => {
+export const fetchGraphQL = async (
+  text: string,
+  variables: Variables
+): Promise<GraphQLResponse> => {
   const response = await fetch("http://localhost:8080/graphql", {
     method: "POST",
     headers: {
